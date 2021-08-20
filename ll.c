@@ -15,22 +15,35 @@ typedef struct DoubleNode {
 } DoubleNode;
 */
 
+Node ** ll_find_node_link(Node ** head_ptr, Node * to_find) {
+  Node ** current_node = head_ptr;
+  while (*current_node != NULL) {
+    if ((*current_node) == to_find){
+      return current_node;
+    }
+    current_node = &((*current_node)->next);
+  }
+  return NULL;
+}
+
+void ll_delete_node(Node ** head_ptr, Node * to_delete) {
+  Node ** current_node = ll_find_node_link(head_ptr, to_delete);
+  if (current_node != NULL) {
+    Node * next = (*current_node)->next;
+    free(*current_node);
+    *current_node = next;
+  }
+}
+
 void ll_insert_node(Node ** head_ptr, Node * to_insert) {
   to_insert->next = *head_ptr;
   *head_ptr = to_insert;
 }
 
-void ll_delete_node(Node ** head_ptr, Node * to_delete) {
-  Node ** current_node = head_ptr;
-  while (*current_node != NULL) {
-    if ((*current_node) == to_delete){
-      Node * next = (*current_node)->next;
-      free(*current_node);
-      *current_node = next;
-      break;
-    }
-    current_node = &((*current_node)->next);
-  }
+void ll_insert_data(Node ** head_ptr, int new_data) {
+  Node * new = malloc(sizeof(Node));
+  new->data = new_data;
+  ll_insert_node(head_ptr, new);
 }
 
 void ll_print_nodes(Node * head) {
@@ -42,17 +55,12 @@ void ll_print_nodes(Node * head) {
 }
 
 void main() {
-  Node * head = malloc(sizeof(Node));
-  head->data = 1337;
+  Node * head = NULL;
+  ll_insert_data(&head, 1337);
+  ll_insert_data(&head, 1500);
+  ll_insert_data(&head, 1111);
 
-  head->next = malloc(sizeof(Node));;
-  head->next->data = 1500;
-
-  head->next->next = malloc(sizeof(Node));;
-  head->next->next->data = 1111;
-
-  head->next->next->next = NULL;
-
+  ll_print_nodes(head);
   ll_delete_node(&head, head->next);
   ll_print_nodes(head);
 }
