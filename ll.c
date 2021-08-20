@@ -17,6 +17,7 @@ void ll_print_nodes(NodeLL * head) {
 NodeLL * ll_create_node(int new_data) {
   NodeLL * new = malloc(sizeof(NodeLL));
   new->data = new_data;
+  new->next = NULL;
   return new;
 }
 
